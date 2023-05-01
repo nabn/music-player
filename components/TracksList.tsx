@@ -1,12 +1,6 @@
 import { FlashList } from "@shopify/flash-list";
 import { useState } from "react";
-import {
-  ActivityIndicator,
-  SafeAreaView,
-  StyleSheet,
-  Text,
-  View,
-} from "react-native";
+import { SafeAreaView, StyleSheet } from "react-native";
 import { Track, useMatchingTracks } from "../hooks/useMatchingTracks";
 import { Empty } from "./Empty";
 import { NowPlaying } from "./NowPlaying";
@@ -47,9 +41,7 @@ export const TracksList = () => {
         }
       />
 
-      {selectedTrack && (
-        <NowPlaying track={selectedTrack} />
-      )}
+      {selectedTrack && <NowPlaying track={selectedTrack} />}
     </SafeAreaView>
   );
 };
