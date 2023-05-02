@@ -1,40 +1,25 @@
-import { View, Text, ActivityIndicator, StyleSheet } from "react-native";
+import { ActivityIndicator } from "react-native"
+import { Box, Text } from "../design-system"
 
 export const Empty = ({ state }: { state: "idle" | "loading" | "error" }) => (
-  <View style={styles.emptyContainer}>
+  <Box p="$4" alignItems="center">
     {state === "loading" ? (
       <ActivityIndicator />
     ) : state === "error" ? (
-      <>
-        <Text style={styles.error}>
+      <Box>
+        <Text textAlign="center" variant="error">
           There was an issue fetching the results.
         </Text>
-        <Text style={styles.helpText}>
+        <Text textAlign="center">
           Please try again later or contact support.
         </Text>
-      </>
+      </Box>
     ) : state === "idle" ? (
-      <Text style={styles.helpText}>Enter an artist name to start</Text>
+      <Text textAlign="center">Enter an artist name to start</Text>
     ) : (
-      <Text style={styles.error}>Something went wrong</Text>
+      <Text textAlign="center" variant="error">
+        Something went wrong
+      </Text>
     )}
-  </View>
-);
-
-const styles = StyleSheet.create({
-  emptyContainer: {
-    flex: 1,
-    alignItems: "center",
-    justifyContent: "center",
-    paddingVertical: 20,
-  },
-  helpText: {
-    color: "grey",
-    textAlign: "center",
-  },
-  error: {
-    color: "red",
-    textAlign: "center",
-    fontSize: 20,
-  },
-});
+  </Box>
+)

@@ -1,53 +1,33 @@
-import { FlashList } from "@shopify/flash-list";
-import { useState } from "react";
-import { SafeAreaView, StyleSheet } from "react-native";
-import { Track, useMatchingTracks } from "../hooks/useMatchingTracks";
-import { Empty } from "./Empty";
-import { NowPlaying } from "./NowPlaying";
-import SearchBar from "./SearchBar";
-import { TrackListItem } from "./Track";
+import { useState } from "react"
+import { StyleSheet, SafeAreaView } from "react-native"
+import { Box } from "../design-system"
+import { Track } from "../hooks/Track"
+import { NowPlaying } from "./NowPlaying"
+import { Results } from "./Results"
+import { SearchBar } from "./SearchBar"
 
 export const TracksList = () => {
-  const [query, setQuery] = useState("");
-  const [selectedTrack, setSelectedTrack] = useState<Track>();
+  const [query, setQuery] = useState("")
+  const [selectedTrack, setSelectedTrack] = useState<Track>()
 
-  const {
-    isLoading,
-    error,
-    data: songs,
-    fetchNextPage,
-  } = useMatchingTracks(query);
-
-  const handleSearch = (query: string) => setQuery(query);
-  const handlePreview = (track: Track) => {
-    setSelectedTrack(track);
-  };
+  const handleSearch = (query: string) => setQuery(query)
+  const handlePreview = (track: Track) => setSelectedTrack(track)
+  const dismissNowPlaying = () => {
+    setSelectedTrack(undefined)
+  }
 
   return (
-    <SafeAreaView style={styles.container}>
-      <SearchBar handleSearch={handleSearch} />
-
-      <FlashList
-        data={songs?.pages[0]}
-        renderItem={({ item }) => (
-          <TrackListItem track={item} onPress={handlePreview} />
-        )}
-        keyExtractor={(item) => item.trackId}
-        estimatedItemSize={100}
-        onEndReachedThreshold={0.8}
-        onEndReached={fetchNextPage}
-        ListEmptyComponent={
-          <Empty state={isLoading ? "loading" : error ? "error" : "idle"} />
-        }
-      />
-
-      {selectedTrack && <NowPlaying track={selectedTrack} />}
-    </SafeAreaView>
-  );
-};
-
+    <Box flex={1}>
+      <SafeAreaView style={styles.wrapper}>
+        <SearchBar handleSearch={handleSearch} />
+        <Results query={query} handlePreview={handlePreview} />
+      </SafeAreaView>
+      {selectedTrack && (
+        <NowPlaying track={selectedTrack} handleClose={dismissNowPlaying} />
+      )}
+    </Box>
+  )
+}
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-  },
-});
+  wrapper: { flex: 1 },
+})

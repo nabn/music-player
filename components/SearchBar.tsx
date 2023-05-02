@@ -1,28 +1,20 @@
-import { TextInput, StyleSheet } from "react-native";
+import { Box, Input } from "../design-system"
 
 type Props = {
-  handleSearch: (query: string) => void;
-};
-const SearchBar = ({ handleSearch }: Props) => {
+  handleSearch: (query: string) => void
+}
+export const SearchBar = ({ handleSearch }: Props) => {
   return (
-    <TextInput
-      style={styles.searchBar}
-      placeholder="Search by artist name"
-      autoCorrect={false}
-      autoCapitalize="words"
-      onSubmitEditing={(e) => handleSearch(e.nativeEvent.text)}
-    />
-  );
-};
-
-const styles = StyleSheet.create({
-  searchBar: {
-    height: 40,
-    borderWidth: 1,
-    borderRadius: 10,
-    paddingHorizontal: 16,
-    marginHorizontal: 16,
-  },
-});
-
-export default SearchBar;
+    <Box px="$4" py="$2">
+      <Input variant="rounded">
+        <Input.Input
+          placeholder="Search by artist name"
+          autoCorrect={false}
+          autoCapitalize="words"
+          onSubmitEditing={(e) => handleSearch(e.nativeEvent.text)}
+        />
+        <Input.Icon />
+      </Input>
+    </Box>
+  )
+}
