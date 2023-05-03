@@ -1,25 +1,33 @@
+import { Ionicons } from "@expo/vector-icons"
 import { TouchableNativeFeedback } from "react-native"
-import { Image, HStack, VStack, Text } from "../design-system"
-import { Track } from "../hooks/Track"
+import { Image, HStack, VStack, Text, Box } from "../design-system"
+import { Track } from "../types/Track"
 
 type Props = {
   track: Track
+  isPlaying: boolean
   onPress: (track: Track) => unknown
 }
 
-export const TrackListItem = ({ track, onPress }: Props) => {
+export const TrackListItem = ({ track, onPress, isPlaying }: Props) => {
   const handlePress = () => onPress(track)
+
   return (
     <TouchableNativeFeedback onPress={handlePress}>
-      <HStack space="md" mx="$4" my="$2">
+      <HStack space="md" px="$4" alignItems="center">
         <Image source={{ uri: track.artworkUrl100 }} size="lg" />
-        <VStack flex={1}>
+        <VStack flex={1} height="100%">
           <Text variant="title" size="lg" color="$blue800">
             {track.trackName}
           </Text>
           <Text fontWeight="$semibold">{track.artistName}</Text>
           <Text>{track.collectionName}</Text>
         </VStack>
+        {isPlaying ? (
+          <Box mr="$2">
+            <Ionicons name="musical-notes-sharp" size={24} color="black" />
+          </Box>
+        ) : null}
       </HStack>
     </TouchableNativeFeedback>
   )

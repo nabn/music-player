@@ -1,7 +1,9 @@
 import { ActivityIndicator } from "react-native"
 import { Box, Text } from "../design-system"
 
-export const Empty = ({ state }: { state: "idle" | "loading" | "error" }) => (
+type State = "idle" | "loading" | "error"
+type Props = { state: State }
+export const Empty = ({ state }: Props) => (
   <Box p="$4" alignItems="center">
     {state === "loading" ? (
       <ActivityIndicator />

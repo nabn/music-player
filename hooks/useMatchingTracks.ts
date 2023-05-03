@@ -1,5 +1,5 @@
 import { useInfiniteQuery } from "@tanstack/react-query"
-import { Track } from "./Track"
+import { Track } from "../types/Track"
 
 const PAGE_SIZE = 25
 const ITUNES_API_URL = "https://itunes.apple.com"
