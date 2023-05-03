@@ -6,14 +6,14 @@ import { TrackListItem } from "./TrackListItem"
 
 type Props = {
   query: string
-  selectedTrack?: Track
+  playingTrackId?: Track['trackId']
   handlePreview: (track: Track) => void
   onScroll?: () => void
   isPlaying: boolean
 }
 export const Results = ({
   query,
-  selectedTrack,
+  playingTrackId,
   handlePreview,
   onScroll,
   isPlaying,
@@ -34,15 +34,15 @@ export const Results = ({
         <TrackListItem
           track={item}
           onPress={handlePreview}
-          isPlaying={isPlaying && selectedTrack?.trackId === item.trackId}
+          isPlaying={isPlaying && playingTrackId === item.trackId}
         />
       )}
-      extraData={{ selectedTrack, isPlaying }}
+      extraData={{ selectedTrackId: playingTrackId, isPlaying }}
       keyExtractor={(item) => item.trackId.toString()}
       estimatedItemSize={100}
       onEndReachedThreshold={0.8}
       onEndReached={fetchNextPage}
-      contentContainerStyle={selectedTrack ? { paddingBottom: 250 } : undefined}
+      contentContainerStyle={playingTrackId ? { paddingBottom: 250 } : undefined}
       ListEmptyComponent={
         <Empty state={isLoading ? "loading" : error ? "error" : "idle"} />
       }

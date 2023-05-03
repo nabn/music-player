@@ -14,10 +14,10 @@ export const TrackListItem = ({ track, onPress, isPlaying }: Props) => {
 
   return (
     <TouchableNativeFeedback onPress={handlePress}>
-      <HStack space="md" px="$4" alignItems="center">
+      <HStack space="md" px="$4" py="$2" alignItems="center">
         <Image source={{ uri: track.artworkUrl100 }} size="lg" />
         <VStack flex={1} height="100%">
-          <Text variant="title" size="lg" color="$blue800">
+          <Text variant="title" size="lg">
             {track.trackName}
           </Text>
           <Text fontWeight="$semibold">{track.artistName}</Text>
@@ -25,7 +25,7 @@ export const TrackListItem = ({ track, onPress, isPlaying }: Props) => {
         </VStack>
         {isPlaying ? (
           <Box mr="$2">
-            <Ionicons name="musical-notes-sharp" size={24} color="black" />
+            <Ionicons name="musical-notes-sharp" size={24} />
           </Box>
         ) : null}
       </HStack>

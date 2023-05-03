@@ -3,12 +3,12 @@ import { useEffect, useState } from "react"
 import { Track } from "../types/Track"
 
 type PlaybackStatus = AVPlaybackStatus & { trackId: Track["trackId"] }
-type State =
+export type NowPlaying =
   | { name: "idle" }
   | { name: "playing"; status: PlaybackStatus }
   | { name: "paused"; status: PlaybackStatus }
 
-const deriveState = (status?: PlaybackStatus): State => {
+const deriveState = (status?: PlaybackStatus): NowPlaying => {
   if (!status || !status.isLoaded) {
     return { name: "idle" }
   }
@@ -19,21 +19,14 @@ const deriveState = (status?: PlaybackStatus): State => {
   return { name: "paused", status }
 }
 
-export type NowPlaying = {
-  state: State
-  selectTrack: (track: Track) => void
-  selectedTrack?: Track
-  play: () => void
-  pause: () => void
-}
-export const useNowPlaying = (): NowPlaying => {
+export const useNowPlaying = () => {
   const [sound, setSound] = useState<Audio.Sound>()
   const [status, setStatus] = useState<PlaybackStatus>()
   const [selectedTrack, setSelectedTrack] = useState<Track>()
 
   const state = deriveState(status)
 
-  const play: NowPlaying["play"] = async () => {
+  const play = async () => {
     try {
       const selectedTrackIsPlaying =
         state.name === "playing" &&
