@@ -17,7 +17,6 @@
     "@gluestack-ui/icon": "latest",
     "@gluestack-ui/input": "latest",
     "@gluestack-ui/provider": "latest",
-    "@gluestack-ui/slider": "latest",
     "@gluestack-ui/vstack": "latest",
     "@react-native-aria/interactions": "^0.2.8",
     "@shopify/flash-list": "1.4.0",
