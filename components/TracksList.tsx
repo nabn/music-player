@@ -3,7 +3,6 @@ import { SafeAreaView, StyleSheet } from "react-native"
 import { Box, Text } from "../design-system"
 import { useNowPlaying } from "../hooks/useNowPlaying"
 import { Track } from "../types/Track"
-import { getProgress } from "../utils/getProgress"
 import { Player, PlayPauseButton, ProgressBar } from "./Player"
 import { Results } from "./Results"
 import { SearchBar } from "./SearchBar"
@@ -13,7 +12,6 @@ export const TracksList = () => {
   const [playerOpen, setPlayerOpen] = useState(false)
 
   const { state, selectedTrack, selectTrack, play, pause } = useNowPlaying()
-  const progress = getProgress(state, selectedTrack)
 
   const handleSearch = (query: string) => setQuery(query)
   const handlePreview = (track: Track) => {
@@ -52,7 +50,9 @@ export const TracksList = () => {
               )}
             </Box>
 
-            <ProgressBar progress={progress} />
+            {state.name === "idle" ? null : (
+              <ProgressBar progress={state.progress} />
+            )}
           </Player>
         ) : null}
       </SafeAreaView>

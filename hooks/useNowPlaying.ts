@@ -5,18 +5,19 @@ import { Track } from "../types/Track"
 type PlaybackStatus = AVPlaybackStatus & { trackId: Track["trackId"] }
 export type NowPlaying =
   | { name: "idle" }
-  | { name: "playing"; status: PlaybackStatus }
-  | { name: "paused"; status: PlaybackStatus }
+  | { name: "playing"; status: PlaybackStatus; progress: number }
+  | { name: "paused"; status: PlaybackStatus; progress: number }
 
 const deriveState = (status?: PlaybackStatus): NowPlaying => {
   if (!status || !status.isLoaded) {
     return { name: "idle" }
   }
 
-  if (status.isPlaying) {
-    return { name: "playing", status }
-  }
-  return { name: "paused", status }
+  const progress = status.durationMillis
+    ? Math.floor((status.positionMillis / status.durationMillis) * 100)
+    : 0
+
+  return { name: status.isPlaying ? "playing" : "paused", status, progress }
 }
 
 export const useNowPlaying = () => {
