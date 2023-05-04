@@ -15,7 +15,7 @@ export const TrackListItem = ({ track, onPress, isPlaying }: Props) => {
   return (
     <TouchableNativeFeedback onPress={handlePress}>
       <HStack space="md" px="$4" py="$2" alignItems="center">
-        <Image source={{ uri: track.artworkUrl100 }} size="lg" />
+        <Image source={{ uri: track.artworkUrl100 }} size="lg" borderRadius={4}/>
         <VStack flex={1} height="100%">
           <Text variant="title" size="lg">
             {track.trackName}
