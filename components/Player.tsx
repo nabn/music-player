@@ -2,6 +2,7 @@ import { Box, Button, HStack, Text } from "../design-system"
 import { Ionicons } from "@expo/vector-icons"
 import { PropsWithChildren } from "react"
 import { ActivityIndicator } from "react-native"
+import * as Haptics from "expo-haptics"
 
 type Props = { handleClose: () => void }
 
@@ -22,7 +23,7 @@ export const Player = ({ handleClose, children }: PropsWithChildren<Props>) => {
   )
 }
 
-export const ProgressBar = ({ progress }: { progress: number }) => (
+export const ProgressBar = ({ progress = 0 }: { progress?: number }) => (
   <Box h="$4" mb="$10">
     {!progress ? null : (
       <Box justifyContent="center" h="$1" bg="$gray500" borderRadius="$full">
@@ -49,8 +50,14 @@ export const PlayPauseButton = ({
 }: {
   onPress: () => void
   variant: keyof typeof iconMap
-}) => (
-  <Button onPress={onPress} variant="link" h='$32'>
-    {iconMap[variant]}
-  </Button>
-)
+}) => {
+  const handlePress = () => {
+    Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light)
+    onPress()
+  }
+  return (
+    <Button onPress={handlePress} variant="link" h="$32">
+      {iconMap[variant]}
+    </Button>
+  )
+}

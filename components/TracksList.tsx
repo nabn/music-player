@@ -6,6 +6,7 @@ import { Track } from "../types/Track"
 import { Player, PlayPauseButton, ProgressBar } from "./Player"
 import { Results } from "./Results"
 import { SearchBar } from "./SearchBar"
+import * as Haptics from "expo-haptics"
 
 export const TracksList = () => {
   const [query, setQuery] = useState("")
@@ -13,12 +14,20 @@ export const TracksList = () => {
 
   const { state, selectedTrack, selectTrack, play, pause } = useNowPlaying()
 
-  const handleSearch = (query: string) => setQuery(query)
+  const handleSearch = (query: string) => {
+    setQuery(query)
+  }
   const handlePreview = (track: Track) => {
+    Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Heavy)
     selectTrack(track)
     setPlayerOpen(true)
   }
-  const dismissPlayer = () => setPlayerOpen(false)
+  const dismissPlayer = () => {
+    if (playerOpen) {
+      Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light)
+      setPlayerOpen(false)
+    }
+  }
 
   const isPlaying = state.name === "playing"
   const playingTrackId = isPlaying ? state.trackId : undefined

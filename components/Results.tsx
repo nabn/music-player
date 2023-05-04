@@ -3,10 +3,11 @@ import { useMatchingTracks } from "../hooks/useMatchingTracks"
 import { Track } from "../types/Track"
 import { Empty } from "./Empty"
 import { TrackListItem } from "./TrackListItem"
+import * as Haptics from "expo-haptics"
 
 type Props = {
   query: string
-  playingTrackId?: Track['trackId']
+  playingTrackId?: Track["trackId"]
   handlePreview: (track: Track) => void
   onScroll?: () => void
   isPlaying: boolean
@@ -25,6 +26,11 @@ export const Results = ({
     fetchNextPage,
   } = useMatchingTracks(query)
 
+  const handleEndReached = () => {
+    Haptics.notificationAsync(Haptics.NotificationFeedbackType.Warning)
+    fetchNextPage()
+  }
+
   const data = songs?.pages[0] ?? ([] as Track[])
   return (
     <FlashList
@@ -41,8 +47,10 @@ export const Results = ({
       keyExtractor={(item) => item.trackId.toString()}
       estimatedItemSize={100}
       onEndReachedThreshold={0.8}
-      onEndReached={fetchNextPage}
-      contentContainerStyle={playingTrackId ? { paddingBottom: 250 } : undefined}
+      onEndReached={handleEndReached}
+      contentContainerStyle={
+        playingTrackId ? { paddingBottom: 250 } : undefined
+      }
       ListEmptyComponent={
         <Empty state={isLoading ? "loading" : error ? "error" : "idle"} />
       }
