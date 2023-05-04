@@ -1,4 +1,4 @@
-A Music Player written in React Native
+A music player written in React Native
 
 ### Libraries used:
 - Theming system: [Gluestack UI](https://ui.gluestack.io/)
