@@ -24,9 +24,7 @@ export const TracksList = () => {
   const playingTrackId = isPlaying ? state.trackId : undefined
 
   const nowPlayingTrackProgress =
-    state.name === "idle" ||
-    state.name === "buffering" ||
-    selectedTrack?.trackId !== state.trackId
+    state.name === "idle" || selectedTrack?.trackId !== state.trackId
       ? 0
       : state.progress
 
