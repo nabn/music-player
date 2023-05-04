@@ -57,6 +57,9 @@ export const useNowPlaying = () => {
         await sound?.unloadAsync()
       }
 
+      // Ensure sound output when ringer is off
+      await Audio.setAudioModeAsync({ playsInSilentModeIOS: true })
+
       const { sound: newSound } = await Audio.Sound.createAsync({
         uri: selectedTrack.previewUrl,
       })
