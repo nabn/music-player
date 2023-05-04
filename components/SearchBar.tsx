@@ -1,19 +1,18 @@
-import { Box, Input } from "../design-system"
+import { Input } from "../design-system"
 
 type Props = {
   handleSearch: (query: string) => void
 }
 export const SearchBar = ({ handleSearch }: Props) => {
   return (
-    <Box px="$4" py="$2">
-      <Input variant="rounded">
-        <Input.Input
-          placeholder="Search by artist name"
-          autoCorrect={false}
-          autoCapitalize="words"
-          onSubmitEditing={(e) => handleSearch(e.nativeEvent.text)}
-        />
-      </Input>
-    </Box>
+    <Input variant="rounded" mx="$4" my="$2">
+      <Input.Input
+        placeholder="Search by artist name"
+        autoCorrect={false}
+        autoCapitalize="words"
+        selectTextOnFocus
+        onSubmitEditing={(e) => handleSearch(e.nativeEvent.text)}
+      />
+    </Input>
   )
 }
