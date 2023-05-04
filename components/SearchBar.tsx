@@ -13,7 +13,6 @@ export const SearchBar = ({ handleSearch }: Props) => {
           autoCapitalize="words"
           onSubmitEditing={(e) => handleSearch(e.nativeEvent.text)}
         />
-        <Input.Icon />
       </Input>
     </Box>
   )

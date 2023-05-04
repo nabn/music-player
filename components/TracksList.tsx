@@ -21,7 +21,14 @@ export const TracksList = () => {
   const dismissPlayer = () => setPlayerOpen(false)
 
   const isPlaying = state.name === "playing"
-  const playingTrackId = isPlaying ? state.status.trackId : undefined
+  const playingTrackId = isPlaying ? state.trackId : undefined
+
+  const nowPlayingTrackProgress =
+    state.name === "idle" ||
+    state.name === "buffering" ||
+    selectedTrack?.trackId !== state.trackId
+      ? 0
+      : state.progress
 
   return (
     <Box flex={1}>
@@ -42,17 +49,17 @@ export const TracksList = () => {
             </Text>
 
             <Box py="$2">
-              {state.name === "playing" &&
-              playingTrackId === selectedTrack.trackId ? (
+              {state.name === "buffering" ? (
+                <PlayPauseButton variant="buffering" onPress={pause} />
+              ) : state.name === "playing" &&
+                playingTrackId === selectedTrack.trackId ? (
                 <PlayPauseButton variant="pause" onPress={pause} />
               ) : (
                 <PlayPauseButton variant="play" onPress={play} />
               )}
             </Box>
 
-            {state.name === "idle" ? null : (
-              <ProgressBar progress={state.progress} />
-            )}
+            <ProgressBar progress={nowPlayingTrackProgress} />
           </Player>
         ) : null}
       </SafeAreaView>

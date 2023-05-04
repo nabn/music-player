@@ -5,19 +5,28 @@ import { Track } from "../types/Track"
 type PlaybackStatus = AVPlaybackStatus & { trackId: Track["trackId"] }
 export type NowPlaying =
   | { name: "idle" }
-  | { name: "playing"; status: PlaybackStatus; progress: number }
-  | { name: "paused"; status: PlaybackStatus; progress: number }
+  | { name: "buffering"; trackId: Track["trackId"] }
+  | { name: "playing"; progress: number; trackId: Track["trackId"] }
+  | { name: "paused"; progress: number; trackId: Track["trackId"] }
 
 const deriveState = (status?: PlaybackStatus): NowPlaying => {
   if (!status || !status.isLoaded) {
     return { name: "idle" }
   }
 
+  if (status.isBuffering) {
+    return { name: "buffering", trackId: status.trackId }
+  }
+
   const progress = status.durationMillis
     ? Math.floor((status.positionMillis / status.durationMillis) * 100)
     : 0
 
-  return { name: status.isPlaying ? "playing" : "paused", status, progress }
+  return {
+    name: status.isPlaying ? "playing" : "paused",
+    trackId: status.trackId,
+    progress,
+  }
 }
 
 export const useNowPlaying = () => {
@@ -30,16 +39,14 @@ export const useNowPlaying = () => {
   const play = async () => {
     try {
       const selectedTrackIsPlaying =
-        state.name === "playing" &&
-        state.status.trackId === selectedTrack?.trackId
+        state.name === "playing" && state.trackId === selectedTrack?.trackId
 
       if (!selectedTrack || selectedTrackIsPlaying) {
         return
       }
 
       const selectedTrackIsPaused =
-        state.name === "paused" &&
-        state.status.trackId === selectedTrack?.trackId
+        state.name === "paused" && state.trackId === selectedTrack?.trackId
 
       if (selectedTrackIsPaused) {
         await sound?.playAsync()

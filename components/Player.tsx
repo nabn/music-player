@@ -1,6 +1,7 @@
 import { Box, Button, HStack, Text } from "../design-system"
 import { Ionicons } from "@expo/vector-icons"
 import { PropsWithChildren } from "react"
+import { ActivityIndicator } from "react-native"
 
 type Props = { handleClose: () => void }
 
@@ -8,7 +9,9 @@ export const Player = ({ handleClose, children }: PropsWithChildren<Props>) => {
   return (
     <Box bg="rgba(0,0,0,0.8)" position="absolute" bottom={0} left={0} right={0}>
       <HStack justifyContent="space-between" alignItems="center" py="$1">
-        <Text color="white" pl='$4'>Now Playing</Text>
+        <Text color="white" pl="$4">
+          Now Playing
+        </Text>
         <Button onPress={handleClose} variant="link">
           <Ionicons name="ios-close-circle" size={30} color="white" />
         </Button>
@@ -34,20 +37,20 @@ export const ProgressBar = ({ progress }: { progress: number }) => (
   </Box>
 )
 
+const iconMap = {
+  play: <Ionicons name={"ios-play-circle-sharp"} size={80} color="white" />,
+  pause: <Ionicons name={"ios-pause-circle-sharp"} size={80} color="white" />,
+  buffering: <ActivityIndicator size="large" />,
+} as const
+
 export const PlayPauseButton = ({
   onPress,
   variant,
 }: {
   onPress: () => void
-  variant: "play" | "pause"
+  variant: keyof typeof iconMap
 }) => (
-  <Button onPress={onPress} variant="link">
-    <Ionicons
-      name={
-        variant === "play" ? "ios-play-circle-sharp" : "ios-pause-circle-sharp"
-      }
-      size={80}
-      color="white"
-    />
+  <Button onPress={onPress} variant="link" h='$32'>
+    {iconMap[variant]}
   </Button>
 )
