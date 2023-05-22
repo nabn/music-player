@@ -3,12 +3,23 @@ import { Ionicons } from "@expo/vector-icons"
 import { PropsWithChildren } from "react"
 import { ActivityIndicator } from "react-native"
 import * as Haptics from "expo-haptics"
+import Animated, { SlideInDown, SlideOutDown } from "react-native-reanimated"
 
 type Props = { handleClose: () => void }
 
 export const Player = ({ handleClose, children }: PropsWithChildren<Props>) => {
   return (
-    <Box bg="rgba(0,0,0,0.8)" position="absolute" bottom={0} left={0} right={0}>
+    <Animated.View
+      entering={SlideInDown}
+      exiting={SlideOutDown}
+      style={{
+        backgroundColor: "rgba(0,0,0,0.8)",
+        position: "absolute",
+        bottom: 0,
+        left: 0,
+        right: 0,
+      }}
+    >
       <HStack justifyContent="space-between" alignItems="center" py="$1">
         <Text color="white" pl="$4">
           Now Playing
@@ -19,7 +30,7 @@ export const Player = ({ handleClose, children }: PropsWithChildren<Props>) => {
       </HStack>
 
       <Box px="$4">{children}</Box>
-    </Box>
+    </Animated.View>
   )
 }
 

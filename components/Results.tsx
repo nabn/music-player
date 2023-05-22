@@ -1,9 +1,10 @@
-import { FlashList } from "@shopify/flash-list"
+import { FlashList, ViewToken } from "@shopify/flash-list"
 import { useMatchingTracks } from "../hooks/useMatchingTracks"
 import { Track } from "../types/Track"
 import { Empty } from "./Empty"
 import { TrackListItem } from "./TrackListItem"
 import * as Haptics from "expo-haptics"
+import { useSharedValue } from "react-native-reanimated"
 
 type Props = {
   query: string
@@ -32,18 +33,24 @@ export const Results = ({
   }
 
   const data = songs?.pages[0] ?? ([] as Track[])
+
+  const viewableItems = useSharedValue<ViewToken[]>([])
   return (
     <FlashList
       data={data}
+      onViewableItemsChanged={({ viewableItems: vItems }) =>
+        (viewableItems.value = vItems)
+      }
       onScrollBeginDrag={onScroll}
       renderItem={({ item }) => (
         <TrackListItem
+          viewableItems={viewableItems}
           track={item}
           onPress={handlePreview}
           isPlaying={isPlaying && playingTrackId === item.trackId}
         />
       )}
-      extraData={{ selectedTrackId: playingTrackId, isPlaying }}
+      extraData={{ selectedTrackId: playingTrackId, isPlaying, viewableItems }}
       keyExtractor={(item) => item.trackId.toString()}
       estimatedItemSize={100}
       onEndReachedThreshold={0.8}
